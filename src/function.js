@@ -9,14 +9,14 @@ type SomeObject = {
 
 type RestArray = Array<any>;
 
-type extendInterface = ((boolean | SomeObject, ...RestArray) => SomeObject)
+type ExtendType = ((boolean | SomeObject, ...RestArray) => SomeObject)
 
 /**
  * Проверяет, что переданный объект является "плоским" (т.е. созданным с помощью "{}"
  * или "new object").
  */
 
-function isPlainObject(obj: any) {
+const isPlainObject: any => boolean = function(obj) {
   if (toString.call(obj) !== '[object Object]') {
     return false;
   }
@@ -26,7 +26,7 @@ function isPlainObject(obj: any) {
 }
 
 
-const extend: extendInterface = function(first, ...sources) {
+const extend: ExtendType = function(first, ...sources) {
   let target: SomeObject;
   let deep: boolean;
   let i: number;
@@ -50,8 +50,8 @@ const extend: extendInterface = function(first, ...sources) {
 
         for (const key in obj) {
             if (hasOwnProperty.call(obj, key)) {
-                const val = obj[key];
-                const isArray = val && Array.isArray(val);
+                const val: SomeObject | Array<any> = obj[key];
+                const isArray: boolean = val && Array.isArray(val);
 
                 // Копируем "плоские" объекты и массивы рекурсивно.
                 if (deep && val && (isPlainObject(val) || isArray)) {
